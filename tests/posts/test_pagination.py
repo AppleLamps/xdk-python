@@ -27,20 +27,20 @@ class TestPostsPagination:
         self.posts_client = getattr(self.client, "posts")
 
 
-    def test_get_reposts_cursor_creation(self):
-        """Test that get_reposts can be used with Cursor."""
-        method = getattr(self.posts_client, "get_reposts")
+    def test_get_quoted_cursor_creation(self):
+        """Test that get_quoted can be used with Cursor."""
+        method = getattr(self.posts_client, "get_quoted")
         # Should be able to create cursor without error
         try:
             test_cursor = cursor(method, "test_value", max_results=10)
             assert test_cursor is not None
             assert isinstance(test_cursor, Cursor)
         except PaginationError:
-            pytest.fail(f"Method get_reposts should support pagination")
+            pytest.fail(f"Method get_quoted should support pagination")
 
 
-    def test_get_reposts_cursor_pages(self):
-        """Test pagination with pages() for get_reposts."""
+    def test_get_quoted_cursor_pages(self):
+        """Test pagination with pages() for get_quoted."""
         with patch.object(self.client, "session") as mock_session:
             # Mock first page response
             first_page_response = Mock()
@@ -61,7 +61,7 @@ class TestPostsPagination:
             # Return different responses for consecutive calls
             mock_session.get.side_effect = [first_page_response, second_page_response]
             # Test pagination
-            method = getattr(self.posts_client, "get_reposts")
+            method = getattr(self.posts_client, "get_quoted")
             test_cursor = cursor(method, "test_value", max_results=2)
             pages = list(test_cursor.pages(2))  # Limit to 2 pages
             assert len(pages) == 2, f"Should get 2 pages, got {len(pages)}"
@@ -77,8 +77,8 @@ class TestPostsPagination:
             assert len(second_data) == 1, "Second page should have 1 item"
 
 
-    def test_get_reposts_cursor_items(self):
-        """Test pagination with items() for get_reposts."""
+    def test_get_quoted_cursor_items(self):
+        """Test pagination with items() for get_quoted."""
         with patch.object(self.client, "session") as mock_session:
             # Mock response with paginated data
             mock_response = Mock()
@@ -97,7 +97,7 @@ class TestPostsPagination:
             mock_response.raise_for_status.return_value = None
             mock_session.get.return_value = mock_response
             # Test item iteration
-            method = getattr(self.posts_client, "get_reposts")
+            method = getattr(self.posts_client, "get_quoted")
             test_cursor = cursor(method, "test_value", max_results=10)
             items = list(test_cursor.items(5))  # Limit to 5 items
             assert len(items) == 3, f"Should get 3 items, got {len(items)}"
@@ -108,15 +108,15 @@ class TestPostsPagination:
                 ), "Items should have 'id' field"
 
 
-    def test_get_reposts_pagination_parameters(self):
-        """Test that pagination parameters are handled correctly for get_reposts."""
+    def test_get_quoted_pagination_parameters(self):
+        """Test that pagination parameters are handled correctly for get_quoted."""
         with patch.object(self.client, "session") as mock_session:
             mock_response = Mock()
             mock_response.status_code = 200
             mock_response.json.return_value = {"data": [], "meta": {"result_count": 0}}
             mock_response.raise_for_status.return_value = None
             mock_session.get.return_value = mock_response
-            method = getattr(self.posts_client, "get_reposts")
+            method = getattr(self.posts_client, "get_quoted")
             # Test with max_results parameter
             test_cursor = cursor(method, "test_value", max_results=5)
             list(test_cursor.pages(1))  # Trigger one request
@@ -311,20 +311,20 @@ class TestPostsPagination:
                 ), "Pagination token should be passed correctly"
 
 
-    def test_search_recent_cursor_creation(self):
-        """Test that search_recent can be used with Cursor."""
-        method = getattr(self.posts_client, "search_recent")
+    def test_get_liking_users_cursor_creation(self):
+        """Test that get_liking_users can be used with Cursor."""
+        method = getattr(self.posts_client, "get_liking_users")
         # Should be able to create cursor without error
         try:
-            test_cursor = cursor(method, "test_query", max_results=10)
+            test_cursor = cursor(method, "test_value", max_results=10)
             assert test_cursor is not None
             assert isinstance(test_cursor, Cursor)
         except PaginationError:
-            pytest.fail(f"Method search_recent should support pagination")
+            pytest.fail(f"Method get_liking_users should support pagination")
 
 
-    def test_search_recent_cursor_pages(self):
-        """Test pagination with pages() for search_recent."""
+    def test_get_liking_users_cursor_pages(self):
+        """Test pagination with pages() for get_liking_users."""
         with patch.object(self.client, "session") as mock_session:
             # Mock first page response
             first_page_response = Mock()
@@ -345,8 +345,8 @@ class TestPostsPagination:
             # Return different responses for consecutive calls
             mock_session.get.side_effect = [first_page_response, second_page_response]
             # Test pagination
-            method = getattr(self.posts_client, "search_recent")
-            test_cursor = cursor(method, "test_query", max_results=2)
+            method = getattr(self.posts_client, "get_liking_users")
+            test_cursor = cursor(method, "test_value", max_results=2)
             pages = list(test_cursor.pages(2))  # Limit to 2 pages
             assert len(pages) == 2, f"Should get 2 pages, got {len(pages)}"
             # Verify first page
@@ -361,8 +361,8 @@ class TestPostsPagination:
             assert len(second_data) == 1, "Second page should have 1 item"
 
 
-    def test_search_recent_cursor_items(self):
-        """Test pagination with items() for search_recent."""
+    def test_get_liking_users_cursor_items(self):
+        """Test pagination with items() for get_liking_users."""
         with patch.object(self.client, "session") as mock_session:
             # Mock response with paginated data
             mock_response = Mock()
@@ -381,8 +381,8 @@ class TestPostsPagination:
             mock_response.raise_for_status.return_value = None
             mock_session.get.return_value = mock_response
             # Test item iteration
-            method = getattr(self.posts_client, "search_recent")
-            test_cursor = cursor(method, "test_query", max_results=10)
+            method = getattr(self.posts_client, "get_liking_users")
+            test_cursor = cursor(method, "test_value", max_results=10)
             items = list(test_cursor.items(5))  # Limit to 5 items
             assert len(items) == 3, f"Should get 3 items, got {len(items)}"
             # Verify items have expected structure
@@ -392,17 +392,17 @@ class TestPostsPagination:
                 ), "Items should have 'id' field"
 
 
-    def test_search_recent_pagination_parameters(self):
-        """Test that pagination parameters are handled correctly for search_recent."""
+    def test_get_liking_users_pagination_parameters(self):
+        """Test that pagination parameters are handled correctly for get_liking_users."""
         with patch.object(self.client, "session") as mock_session:
             mock_response = Mock()
             mock_response.status_code = 200
             mock_response.json.return_value = {"data": [], "meta": {"result_count": 0}}
             mock_response.raise_for_status.return_value = None
             mock_session.get.return_value = mock_response
-            method = getattr(self.posts_client, "search_recent")
+            method = getattr(self.posts_client, "get_liking_users")
             # Test with max_results parameter
-            test_cursor = cursor(method, "test_query", max_results=5)
+            test_cursor = cursor(method, "test_value", max_results=5)
             list(test_cursor.pages(1))  # Trigger one request
             # Verify max_results was passed in request
             call_args = mock_session.get.call_args
@@ -431,7 +431,7 @@ class TestPostsPagination:
                 mock_response_with_token,
                 second_page_response,
             ]
-            test_cursor = cursor(method, "test_query", max_results=1)
+            test_cursor = cursor(method, "test_value", max_results=1)
             pages = list(test_cursor.pages(2))
             # Should have made 2 requests
             assert (
@@ -453,20 +453,20 @@ class TestPostsPagination:
                 ), "Pagination token should be passed correctly"
 
 
-    def test_get_quoted_cursor_creation(self):
-        """Test that get_quoted can be used with Cursor."""
-        method = getattr(self.posts_client, "get_quoted")
+    def test_get_reposts_cursor_creation(self):
+        """Test that get_reposts can be used with Cursor."""
+        method = getattr(self.posts_client, "get_reposts")
         # Should be able to create cursor without error
         try:
             test_cursor = cursor(method, "test_value", max_results=10)
             assert test_cursor is not None
             assert isinstance(test_cursor, Cursor)
         except PaginationError:
-            pytest.fail(f"Method get_quoted should support pagination")
+            pytest.fail(f"Method get_reposts should support pagination")
 
 
-    def test_get_quoted_cursor_pages(self):
-        """Test pagination with pages() for get_quoted."""
+    def test_get_reposts_cursor_pages(self):
+        """Test pagination with pages() for get_reposts."""
         with patch.object(self.client, "session") as mock_session:
             # Mock first page response
             first_page_response = Mock()
@@ -487,7 +487,7 @@ class TestPostsPagination:
             # Return different responses for consecutive calls
             mock_session.get.side_effect = [first_page_response, second_page_response]
             # Test pagination
-            method = getattr(self.posts_client, "get_quoted")
+            method = getattr(self.posts_client, "get_reposts")
             test_cursor = cursor(method, "test_value", max_results=2)
             pages = list(test_cursor.pages(2))  # Limit to 2 pages
             assert len(pages) == 2, f"Should get 2 pages, got {len(pages)}"
@@ -503,8 +503,8 @@ class TestPostsPagination:
             assert len(second_data) == 1, "Second page should have 1 item"
 
 
-    def test_get_quoted_cursor_items(self):
-        """Test pagination with items() for get_quoted."""
+    def test_get_reposts_cursor_items(self):
+        """Test pagination with items() for get_reposts."""
         with patch.object(self.client, "session") as mock_session:
             # Mock response with paginated data
             mock_response = Mock()
@@ -523,7 +523,7 @@ class TestPostsPagination:
             mock_response.raise_for_status.return_value = None
             mock_session.get.return_value = mock_response
             # Test item iteration
-            method = getattr(self.posts_client, "get_quoted")
+            method = getattr(self.posts_client, "get_reposts")
             test_cursor = cursor(method, "test_value", max_results=10)
             items = list(test_cursor.items(5))  # Limit to 5 items
             assert len(items) == 3, f"Should get 3 items, got {len(items)}"
@@ -534,15 +534,15 @@ class TestPostsPagination:
                 ), "Items should have 'id' field"
 
 
-    def test_get_quoted_pagination_parameters(self):
-        """Test that pagination parameters are handled correctly for get_quoted."""
+    def test_get_reposts_pagination_parameters(self):
+        """Test that pagination parameters are handled correctly for get_reposts."""
         with patch.object(self.client, "session") as mock_session:
             mock_response = Mock()
             mock_response.status_code = 200
             mock_response.json.return_value = {"data": [], "meta": {"result_count": 0}}
             mock_response.raise_for_status.return_value = None
             mock_session.get.return_value = mock_response
-            method = getattr(self.posts_client, "get_quoted")
+            method = getattr(self.posts_client, "get_reposts")
             # Test with max_results parameter
             test_cursor = cursor(method, "test_value", max_results=5)
             list(test_cursor.pages(1))  # Trigger one request
@@ -737,20 +737,20 @@ class TestPostsPagination:
                 ), "Pagination token should be passed correctly"
 
 
-    def test_get_liking_users_cursor_creation(self):
-        """Test that get_liking_users can be used with Cursor."""
-        method = getattr(self.posts_client, "get_liking_users")
+    def test_search_recent_cursor_creation(self):
+        """Test that search_recent can be used with Cursor."""
+        method = getattr(self.posts_client, "search_recent")
         # Should be able to create cursor without error
         try:
-            test_cursor = cursor(method, "test_value", max_results=10)
+            test_cursor = cursor(method, "test_query", max_results=10)
             assert test_cursor is not None
             assert isinstance(test_cursor, Cursor)
         except PaginationError:
-            pytest.fail(f"Method get_liking_users should support pagination")
+            pytest.fail(f"Method search_recent should support pagination")
 
 
-    def test_get_liking_users_cursor_pages(self):
-        """Test pagination with pages() for get_liking_users."""
+    def test_search_recent_cursor_pages(self):
+        """Test pagination with pages() for search_recent."""
         with patch.object(self.client, "session") as mock_session:
             # Mock first page response
             first_page_response = Mock()
@@ -771,8 +771,8 @@ class TestPostsPagination:
             # Return different responses for consecutive calls
             mock_session.get.side_effect = [first_page_response, second_page_response]
             # Test pagination
-            method = getattr(self.posts_client, "get_liking_users")
-            test_cursor = cursor(method, "test_value", max_results=2)
+            method = getattr(self.posts_client, "search_recent")
+            test_cursor = cursor(method, "test_query", max_results=2)
             pages = list(test_cursor.pages(2))  # Limit to 2 pages
             assert len(pages) == 2, f"Should get 2 pages, got {len(pages)}"
             # Verify first page
@@ -787,8 +787,8 @@ class TestPostsPagination:
             assert len(second_data) == 1, "Second page should have 1 item"
 
 
-    def test_get_liking_users_cursor_items(self):
-        """Test pagination with items() for get_liking_users."""
+    def test_search_recent_cursor_items(self):
+        """Test pagination with items() for search_recent."""
         with patch.object(self.client, "session") as mock_session:
             # Mock response with paginated data
             mock_response = Mock()
@@ -807,8 +807,8 @@ class TestPostsPagination:
             mock_response.raise_for_status.return_value = None
             mock_session.get.return_value = mock_response
             # Test item iteration
-            method = getattr(self.posts_client, "get_liking_users")
-            test_cursor = cursor(method, "test_value", max_results=10)
+            method = getattr(self.posts_client, "search_recent")
+            test_cursor = cursor(method, "test_query", max_results=10)
             items = list(test_cursor.items(5))  # Limit to 5 items
             assert len(items) == 3, f"Should get 3 items, got {len(items)}"
             # Verify items have expected structure
@@ -818,17 +818,17 @@ class TestPostsPagination:
                 ), "Items should have 'id' field"
 
 
-    def test_get_liking_users_pagination_parameters(self):
-        """Test that pagination parameters are handled correctly for get_liking_users."""
+    def test_search_recent_pagination_parameters(self):
+        """Test that pagination parameters are handled correctly for search_recent."""
         with patch.object(self.client, "session") as mock_session:
             mock_response = Mock()
             mock_response.status_code = 200
             mock_response.json.return_value = {"data": [], "meta": {"result_count": 0}}
             mock_response.raise_for_status.return_value = None
             mock_session.get.return_value = mock_response
-            method = getattr(self.posts_client, "get_liking_users")
+            method = getattr(self.posts_client, "search_recent")
             # Test with max_results parameter
-            test_cursor = cursor(method, "test_value", max_results=5)
+            test_cursor = cursor(method, "test_query", max_results=5)
             list(test_cursor.pages(1))  # Trigger one request
             # Verify max_results was passed in request
             call_args = mock_session.get.call_args
@@ -857,7 +857,7 @@ class TestPostsPagination:
                 mock_response_with_token,
                 second_page_response,
             ]
-            test_cursor = cursor(method, "test_value", max_results=1)
+            test_cursor = cursor(method, "test_query", max_results=1)
             pages = list(test_cursor.pages(2))
             # Should have made 2 requests
             assert (
@@ -889,7 +889,7 @@ class TestPostsPagination:
             empty_response.raise_for_status.return_value = None
             mock_session.get.return_value = empty_response
             # Pick first paginatable method for testing
-            method = getattr(self.posts_client, "get_reposts")
+            method = getattr(self.posts_client, "get_quoted")
             test_cursor = cursor(method, "test_value", max_results=10)
             # Should handle empty responses gracefully
             pages = list(test_cursor.pages(1))

@@ -31,20 +31,11 @@ class CreateResponse(BaseModel):
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
 
-# Models for delete
+# Models for search_written
 
 
-class DeleteResponse(BaseModel):
-    """Response model for delete"""
-
-    model_config = ConfigDict(populate_by_name=True, extra="allow")
-
-
-# Models for search_eligible_posts
-
-
-class SearchEligiblePostsResponse(BaseModel):
-    """Response model for search_eligible_posts"""
+class SearchWrittenResponse(BaseModel):
+    """Response model for search_written"""
 
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
@@ -64,10 +55,19 @@ class EvaluateResponse(BaseModel):
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
 
-# Models for search_written
+# Models for search_eligible_posts
 
 
-class SearchWrittenResponse(BaseModel):
-    """Response model for search_written"""
+class SearchEligiblePostsResponse(BaseModel):
+    """Response model for search_eligible_posts"""
+
+    model_config = ConfigDict(populate_by_name=True, extra="allow")
+
+
+# Models for delete
+
+
+class DeleteResponse(BaseModel):
+    """Response model for delete"""
 
     model_config = ConfigDict(populate_by_name=True, extra="allow")

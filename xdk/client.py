@@ -21,37 +21,37 @@ from .posts.client import PostsClient
 
 from .spaces.client import SpacesClient
 
-from .news.client import NewsClient
-
-from .media.client import MediaClient
-
-from .compliance.client import ComplianceClient
-
-from .webhooks.client import WebhooksClient
-
-from .direct_messages.client import DirectMessagesClient
-
-from .community_notes.client import CommunityNotesClient
-
-from .lists.client import ListsClient
-
 from .stream.client import StreamClient
-
-from .activity.client import ActivityClient
-
-from .usage.client import UsageClient
-
-from .general.client import GeneralClient
-
-from .trends.client import TrendsClient
 
 from .connections.client import ConnectionsClient
 
 from .account_activity.client import AccountActivityClient
 
+from .general.client import GeneralClient
+
 from .communities.client import CommunitiesClient
 
+from .trends.client import TrendsClient
+
+from .activity.client import ActivityClient
+
+from .media.client import MediaClient
+
+from .usage.client import UsageClient
+
 from .users.client import UsersClient
+
+from .compliance.client import ComplianceClient
+
+from .community_notes.client import CommunityNotesClient
+
+from .news.client import NewsClient
+
+from .lists.client import ListsClient
+
+from .webhooks.client import WebhooksClient
+
+from .direct_messages.client import DirectMessagesClient
 
 
 class Client:
@@ -96,22 +96,22 @@ class Client:
         # Initialize clients for each tag
         self.posts = PostsClient(self)
         self.spaces = SpacesClient(self)
-        self.news = NewsClient(self)
-        self.media = MediaClient(self)
-        self.compliance = ComplianceClient(self)
-        self.webhooks = WebhooksClient(self)
-        self.direct_messages = DirectMessagesClient(self)
-        self.community_notes = CommunityNotesClient(self)
-        self.lists = ListsClient(self)
         self.stream = StreamClient(self)
-        self.activity = ActivityClient(self)
-        self.usage = UsageClient(self)
-        self.general = GeneralClient(self)
-        self.trends = TrendsClient(self)
         self.connections = ConnectionsClient(self)
         self.account_activity = AccountActivityClient(self)
+        self.general = GeneralClient(self)
         self.communities = CommunitiesClient(self)
+        self.trends = TrendsClient(self)
+        self.activity = ActivityClient(self)
+        self.media = MediaClient(self)
+        self.usage = UsageClient(self)
         self.users = UsersClient(self)
+        self.compliance = ComplianceClient(self)
+        self.community_notes = CommunityNotesClient(self)
+        self.news = NewsClient(self)
+        self.lists = ListsClient(self)
+        self.webhooks = WebhooksClient(self)
+        self.direct_messages = DirectMessagesClient(self)
 
     @property
 

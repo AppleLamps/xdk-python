@@ -31,20 +31,32 @@ class InitializeUploadResponse(BaseModel):
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
 
-# Models for get_analytics
+# Models for create_subtitles
 
 
-class GetAnalyticsResponse(BaseModel):
-    """Response model for get_analytics"""
+class CreateSubtitlesRequest(BaseModel):
+    """Request model for create_subtitles"""
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
+class CreateSubtitlesResponse(BaseModel):
+    """Response model for create_subtitles"""
 
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
 
-# Models for finalize_upload
+# Models for delete_subtitles
 
 
-class FinalizeUploadResponse(BaseModel):
-    """Response model for finalize_upload"""
+class DeleteSubtitlesRequest(BaseModel):
+    """Request model for delete_subtitles"""
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
+class DeleteSubtitlesResponse(BaseModel):
+    """Response model for delete_subtitles"""
 
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
@@ -54,15 +66,6 @@ class FinalizeUploadResponse(BaseModel):
 
 class GetByKeysResponse(BaseModel):
     """Response model for get_by_keys"""
-
-    model_config = ConfigDict(populate_by_name=True, extra="allow")
-
-
-# Models for get_by_key
-
-
-class GetByKeyResponse(BaseModel):
-    """Response model for get_by_key"""
 
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
@@ -78,6 +81,15 @@ class AppendUploadRequest(BaseModel):
 
 class AppendUploadResponse(BaseModel):
     """Response model for append_upload"""
+
+    model_config = ConfigDict(populate_by_name=True, extra="allow")
+
+
+# Models for get_by_key
+
+
+class GetByKeyResponse(BaseModel):
+    """Response model for get_by_key"""
 
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
@@ -121,31 +133,19 @@ class CreateMetadataResponse(BaseModel):
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
 
-# Models for create_subtitles
+# Models for finalize_upload
 
 
-class CreateSubtitlesRequest(BaseModel):
-    """Request model for create_subtitles"""
-
-    model_config = ConfigDict(populate_by_name=True)
-
-
-class CreateSubtitlesResponse(BaseModel):
-    """Response model for create_subtitles"""
+class FinalizeUploadResponse(BaseModel):
+    """Response model for finalize_upload"""
 
     model_config = ConfigDict(populate_by_name=True, extra="allow")
 
 
-# Models for delete_subtitles
+# Models for get_analytics
 
 
-class DeleteSubtitlesRequest(BaseModel):
-    """Request model for delete_subtitles"""
-
-    model_config = ConfigDict(populate_by_name=True)
-
-
-class DeleteSubtitlesResponse(BaseModel):
-    """Response model for delete_subtitles"""
+class GetAnalyticsResponse(BaseModel):
+    """Response model for get_analytics"""
 
     model_config = ConfigDict(populate_by_name=True, extra="allow")

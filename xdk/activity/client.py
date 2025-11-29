@@ -31,13 +31,13 @@ import json
 if TYPE_CHECKING:
     from ..client import Client
 from .models import (
-    UpdateSubscriptionRequest,
-    UpdateSubscriptionResponse,
-    DeleteSubscriptionResponse,
-    StreamResponse,
     GetSubscriptionsResponse,
     CreateSubscriptionRequest,
     CreateSubscriptionResponse,
+    StreamResponse,
+    UpdateSubscriptionRequest,
+    UpdateSubscriptionResponse,
+    DeleteSubscriptionResponse,
 )
 
 
@@ -49,20 +49,53 @@ class ActivityClient:
         self.client = client
 
 
-    def update_subscription(
-        self, subscription_id: Any, body: Optional[UpdateSubscriptionRequest] = None
-    ) -> UpdateSubscriptionResponse:
+    def get_subscriptions(
+        self,
+    ) -> GetSubscriptionsResponse:
         """
-        Update X activity subscription
-        Updates a subscription for an X activity event
-        Args:
-            subscription_id: The ID of the subscription to update.
-            body: Request body
+        Get X activity subscriptions
+        Get a list of active subscriptions for XAA
         Returns:
-            UpdateSubscriptionResponse: Response data
+            GetSubscriptionsResponse: Response data
         """
-        url = self.client.base_url + "/2/activity/subscriptions/{subscription_id}"
-        url = url.replace("{subscription_id}", str(subscription_id))
+        url = self.client.base_url + "/2/activity/subscriptions"
+        if self.client.bearer_token:
+            self.client.session.headers["Authorization"] = (
+                f"Bearer {self.client.bearer_token}"
+            )
+        elif self.client.access_token:
+            self.client.session.headers["Authorization"] = (
+                f"Bearer {self.client.access_token}"
+            )
+        params = {}
+        headers = {}
+        # Prepare request data
+        json_data = None
+        # Make the request
+        response = self.client.session.get(
+            url,
+            params=params,
+            headers=headers,
+        )
+        # Check for errors
+        response.raise_for_status()
+        # Parse the response data
+        response_data = response.json()
+        # Convert to Pydantic model if applicable
+        return GetSubscriptionsResponse.model_validate(response_data)
+
+
+    def create_subscription(
+        self, body: Optional[CreateSubscriptionRequest] = None
+    ) -> CreateSubscriptionResponse:
+        """
+        Create X activity subscription
+        Creates a subscription for an X activity event
+        body: Request body
+        Returns:
+            CreateSubscriptionResponse: Response data
+        """
+        url = self.client.base_url + "/2/activity/subscriptions"
         if self.client.bearer_token:
             self.client.session.headers["Authorization"] = (
                 f"Bearer {self.client.bearer_token}"
@@ -83,7 +116,7 @@ class ActivityClient:
                 else body
             )
         # Make the request
-        response = self.client.session.put(
+        response = self.client.session.post(
             url,
             params=params,
             headers=headers,
@@ -94,44 +127,7 @@ class ActivityClient:
         # Parse the response data
         response_data = response.json()
         # Convert to Pydantic model if applicable
-        return UpdateSubscriptionResponse.model_validate(response_data)
-
-
-    def delete_subscription(self, subscription_id: Any) -> DeleteSubscriptionResponse:
-        """
-        Deletes X activity subscription
-        Deletes a subscription for an X activity event
-        Args:
-            subscription_id: The ID of the subscription to delete.
-            Returns:
-            DeleteSubscriptionResponse: Response data
-        """
-        url = self.client.base_url + "/2/activity/subscriptions/{subscription_id}"
-        url = url.replace("{subscription_id}", str(subscription_id))
-        if self.client.bearer_token:
-            self.client.session.headers["Authorization"] = (
-                f"Bearer {self.client.bearer_token}"
-            )
-        elif self.client.access_token:
-            self.client.session.headers["Authorization"] = (
-                f"Bearer {self.client.access_token}"
-            )
-        params = {}
-        headers = {}
-        # Prepare request data
-        json_data = None
-        # Make the request
-        response = self.client.session.delete(
-            url,
-            params=params,
-            headers=headers,
-        )
-        # Check for errors
-        response.raise_for_status()
-        # Parse the response data
-        response_data = response.json()
-        # Convert to Pydantic model if applicable
-        return DeleteSubscriptionResponse.model_validate(response_data)
+        return CreateSubscriptionResponse.model_validate(response_data)
 
 
     def stream(
@@ -232,53 +228,20 @@ class ActivityClient:
             raise
 
 
-    def get_subscriptions(
-        self,
-    ) -> GetSubscriptionsResponse:
+    def update_subscription(
+        self, subscription_id: Any, body: Optional[UpdateSubscriptionRequest] = None
+    ) -> UpdateSubscriptionResponse:
         """
-        Get X activity subscriptions
-        Get a list of active subscriptions for XAA
+        Update X activity subscription
+        Updates a subscription for an X activity event
+        Args:
+            subscription_id: The ID of the subscription to update.
+            body: Request body
         Returns:
-            GetSubscriptionsResponse: Response data
+            UpdateSubscriptionResponse: Response data
         """
-        url = self.client.base_url + "/2/activity/subscriptions"
-        if self.client.bearer_token:
-            self.client.session.headers["Authorization"] = (
-                f"Bearer {self.client.bearer_token}"
-            )
-        elif self.client.access_token:
-            self.client.session.headers["Authorization"] = (
-                f"Bearer {self.client.access_token}"
-            )
-        params = {}
-        headers = {}
-        # Prepare request data
-        json_data = None
-        # Make the request
-        response = self.client.session.get(
-            url,
-            params=params,
-            headers=headers,
-        )
-        # Check for errors
-        response.raise_for_status()
-        # Parse the response data
-        response_data = response.json()
-        # Convert to Pydantic model if applicable
-        return GetSubscriptionsResponse.model_validate(response_data)
-
-
-    def create_subscription(
-        self, body: Optional[CreateSubscriptionRequest] = None
-    ) -> CreateSubscriptionResponse:
-        """
-        Create X activity subscription
-        Creates a subscription for an X activity event
-        body: Request body
-        Returns:
-            CreateSubscriptionResponse: Response data
-        """
-        url = self.client.base_url + "/2/activity/subscriptions"
+        url = self.client.base_url + "/2/activity/subscriptions/{subscription_id}"
+        url = url.replace("{subscription_id}", str(subscription_id))
         if self.client.bearer_token:
             self.client.session.headers["Authorization"] = (
                 f"Bearer {self.client.bearer_token}"
@@ -299,7 +262,7 @@ class ActivityClient:
                 else body
             )
         # Make the request
-        response = self.client.session.post(
+        response = self.client.session.put(
             url,
             params=params,
             headers=headers,
@@ -310,4 +273,41 @@ class ActivityClient:
         # Parse the response data
         response_data = response.json()
         # Convert to Pydantic model if applicable
-        return CreateSubscriptionResponse.model_validate(response_data)
+        return UpdateSubscriptionResponse.model_validate(response_data)
+
+
+    def delete_subscription(self, subscription_id: Any) -> DeleteSubscriptionResponse:
+        """
+        Deletes X activity subscription
+        Deletes a subscription for an X activity event
+        Args:
+            subscription_id: The ID of the subscription to delete.
+            Returns:
+            DeleteSubscriptionResponse: Response data
+        """
+        url = self.client.base_url + "/2/activity/subscriptions/{subscription_id}"
+        url = url.replace("{subscription_id}", str(subscription_id))
+        if self.client.bearer_token:
+            self.client.session.headers["Authorization"] = (
+                f"Bearer {self.client.bearer_token}"
+            )
+        elif self.client.access_token:
+            self.client.session.headers["Authorization"] = (
+                f"Bearer {self.client.access_token}"
+            )
+        params = {}
+        headers = {}
+        # Prepare request data
+        json_data = None
+        # Make the request
+        response = self.client.session.delete(
+            url,
+            params=params,
+            headers=headers,
+        )
+        # Check for errors
+        response.raise_for_status()
+        # Parse the response data
+        response_data = response.json()
+        # Convert to Pydantic model if applicable
+        return DeleteSubscriptionResponse.model_validate(response_data)

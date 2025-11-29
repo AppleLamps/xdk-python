@@ -13,5 +13,5 @@ Generated automatically - do not edit manually.
 from .client import Client
 from .paginator import Cursor, cursor, PaginationError
 
-__version__ = "0.1.0"
+__version__ = "0.2.5-beta"
 __all__ = ["Client", "Cursor", "cursor", "PaginationError"]
